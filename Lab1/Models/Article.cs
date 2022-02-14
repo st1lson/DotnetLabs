@@ -10,6 +10,8 @@ namespace Lab1.Models
 
         public DateTime ReleaseDate { get; set; }
 
+        public Journal Journal { get; set; }
+
         public ICollection<Author> Authors { get; set; } = new List<Author>();
 
         public override string ToString()

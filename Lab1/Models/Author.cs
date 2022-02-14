@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Lab1.Models
+﻿namespace Lab1.Models
 {
     internal class Author
     {
