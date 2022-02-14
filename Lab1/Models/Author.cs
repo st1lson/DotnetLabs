@@ -1,4 +1,6 @@
-﻿namespace Lab1.Models
+﻿using System.Text;
+
+namespace Lab1.Models
 {
     internal class Author
     {
@@ -9,5 +11,10 @@
         public string LastName { get; set; }
 
         public string Workplace { get; set; }
+
+        public override string ToString()
+        {
+            return $"{FirstName} {Patronymic} {LastName}";
+        }
     }
 }
