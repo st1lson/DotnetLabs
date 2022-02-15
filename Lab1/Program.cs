@@ -24,6 +24,18 @@ namespace Lab1
                 LastName = "Nighy",
                 Workplace = "The Flying Dutchman"
             };
+            Author thirdAuthor = new()
+            {
+                FirstName = "Jack",
+                LastName = "Sparrow",
+                Workplace = "The Black Pearl"
+            };
+            List<Author> authorsCollection = new()
+            {
+                firstAuthor,
+                secondAuthor,
+                thirdAuthor
+            };
 
             Article firstArticle = new()
             {
@@ -35,13 +47,13 @@ namespace Lab1
             {
                 Name = "Second article",
                 ReleaseDate = DateTime.Now - TimeSpan.FromDays(2),
-                Authors = new List<Author>() { firstAuthor }
+                Authors = new List<Author>() { firstAuthor, thirdAuthor }
             };
             Article thirdArticle = new()
             {
                 Name = "Third article",
                 ReleaseDate = DateTime.Now - TimeSpan.FromMinutes(15),
-                Authors = new List<Author>() { secondAuthor }
+                Authors = new List<Author>() { secondAuthor, thirdAuthor }
             };
             List<Article> articlesCollection = new()
             {
@@ -65,7 +77,7 @@ namespace Lab1
                 Frequency = TimeSpan.FromDays(30),
                 ReleaseDate = DateTime.Now - TimeSpan.FromDays(7)
             };
-            ICollection<Journal> journalsCollection = new List<Journal>()
+            List<Journal> journalsCollection = new()
             {
                 journal,
                 secondJournal
@@ -107,7 +119,7 @@ namespace Lab1
                 .SkipWhile(a => a.ReleaseDate < DateTime.Now - TimeSpan.FromDays(30) || a.ReleaseDate > DateTime.Now);
             PrintArray(limitedArticles);
 
-            IEnumerable<Author> specificAuthors = firstArticle.Authors
+            IEnumerable<Author> specificAuthors = authorsCollection
                 .Where(a => Regex.IsMatch(a.FirstName, @"[Jj]ohn"));
             PrintArray(specificAuthors);
 
