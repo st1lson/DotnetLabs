@@ -112,6 +112,7 @@ namespace Lab1
                 .TakeLast(1);
             PrintArray(limitedAuthors);
 
+
             double averageCopies = journalsCollection.Average(j => j.Copies);
             Console.WriteLine(averageCopies);
 
@@ -127,6 +128,13 @@ namespace Lab1
                 from a in firstArticle.Authors
                 group a by a.Workplace into g
                 select new { Name = g.Key, Count = g.Count() };
+            if (groupedAuthors is null)
+            {
+                throw new ArgumentNullException(nameof(groupedAuthors));
+            }
+
+            groupedAuthors = firstArticle.Authors.GroupBy(a => a.Workplace)
+                .Select(a => new { Name = a.Key, Count = a.Count() });
             PrintArray(groupedAuthors);
 
             var detailedArticles =
@@ -146,7 +154,10 @@ namespace Lab1
             PrintArray(intersectedAuthors);
 
             Article author = articlesCollection.FirstOrDefault(a => Regex.IsMatch(a.Name, @"[Ss]econd"));
-            Console.WriteLine(author);
+            if (author is not null)
+            {
+                Console.WriteLine(author);
+            }
         }
 
         private static void PrintArray<T>(IEnumerable<T> array)
