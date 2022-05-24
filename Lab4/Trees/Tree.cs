@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 
 namespace Lab4.Tree
@@ -16,33 +17,18 @@ namespace Lab4.Tree
             result = SymmetricalTraversal(Root);
         }
 
-        public Node<T> Add(T item, NodePosition position, Node<T> node = null)
-        {
-            if (Root is null && node is null)
-            {
-                Root = new Node<T>(item);
-                Count++;
-                return Root;
-            }
-
-            Node<T> createdNode;
-            if (position == NodePosition.Left)
-            {
-                createdNode = node.Childs[0] = new Node<T>(item);
-            }
-            else
-            {
-                createdNode = node.Childs[1] = new Node<T>(item);
-            }
-
-            Count++;
-            return createdNode;
-        }
-
         public void Clear()
         {
             Root = null;
             Count = 0;
+        }
+
+        public void PrintVariables()
+        {
+            foreach (var key in _variables.Keys)
+            {
+                Console.WriteLine($"{key} = {_variables[key]}");
+            }
         }
 
         private double SymmetricalTraversal(Node<T> node)

@@ -29,10 +29,17 @@ namespace Lab4
                 {
                     while (operStack.Peek() != '(')
                     {
-                        char operat = operStack.Pop();
-                        Node<Expression> rightChild = exprStack.Pop();
-                        Node<Expression> leftChild = exprStack.Pop();
-                        exprStack.Push(new Node<Expression>(new ComplexExpression(operat.ToString()), leftChild, rightChild));
+                        if ("=".Contains(operStack.Peek()) && "=".Contains(exprStack.Peek().Expression.Value))
+                        {
+                            exprStack.Peek().Expression.Value += operStack.Pop();
+                        }
+                        else
+                        {
+                            char operat = operStack.Pop();
+                            Node<Expression> rightChild = exprStack.Pop();
+                            Node<Expression> leftChild = exprStack.Pop();
+                            exprStack.Push(new Node<Expression>(new ComplexExpression(operat.ToString()), leftChild, rightChild));
+                        }
                     }
 
                     operStack.Pop();
@@ -54,7 +61,7 @@ namespace Lab4
                 {
                     operStack.Push(expression[i]);
                 }
-                else if ("+-*/".Contains(expression[i]))
+                else if ("+-*/=".Contains(expression[i]))
                 {
                     while (operStack.Count != 0 && GetPriority(operStack.Peek()) >= GetPriority(expression[i]))
                     {

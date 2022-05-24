@@ -6,7 +6,7 @@
 
         private static Manager _instance;
 
-        private Manager(string name) 
+        private Manager(string name)
         {
             Name = name;
         }
