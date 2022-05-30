@@ -1,13 +1,10 @@
-﻿using System;
+using System;
 using System.Collections;
-using System.Linq;
 
-namespace Lab4.Tree
+namespace Lab4.Trees
 {
     internal sealed class Tree<T> where T : Expression
     {
-        public int Count { get; private set; }
-
         internal Node<T> Root { get; set; }
 
         private readonly Hashtable _variables = new();
@@ -20,7 +17,6 @@ namespace Lab4.Tree
         public void Clear()
         {
             Root = null;
-            Count = 0;
         }
 
         public void PrintVariables()
@@ -35,13 +31,13 @@ namespace Lab4.Tree
         {
             string value = node.Expression.Value;
             double result = 0;
-            if (value.All(char.IsLetterOrDigit))
+            if (node.IsSimpleExpression())
             {
                 foreach (string key in _variables.Keys)
                 {
                     if (node.Expression.Value.Equals(key))
                     {
-                        return double.Parse(_variables[key].ToString());
+                        return double.Parse(_variables[key]?.ToString() ?? string.Empty);
                     }
                 }
 
@@ -51,25 +47,25 @@ namespace Lab4.Tree
             switch (value)
             {
                 case "+":
-                    result = SymmetricalTraversal(node.Childs[0]) + SymmetricalTraversal(node.Childs[1]);
+                    result = SymmetricalTraversal(node.Children[0]) + SymmetricalTraversal(node.Children[1]);
                     break;
                 case "-":
-                    result = SymmetricalTraversal(node.Childs[0]) - SymmetricalTraversal(node.Childs[1]);
+                    result = SymmetricalTraversal(node.Children[0]) - SymmetricalTraversal(node.Children[1]);
                     break;
                 case "*":
-                    result = SymmetricalTraversal(node.Childs[0]) * SymmetricalTraversal(node.Childs[1]);
+                    result = SymmetricalTraversal(node.Children[0]) * SymmetricalTraversal(node.Children[1]);
                     break;
                 case "/":
-                    result = SymmetricalTraversal(node.Childs[0]) / SymmetricalTraversal(node.Childs[1]);
+                    result = SymmetricalTraversal(node.Children[0]) / SymmetricalTraversal(node.Children[1]);
                     break;
                 case "=":
-                    if (_variables.ContainsKey(node.Childs[0].Expression.Value))
+                    if (_variables.ContainsKey(node.Children[0].Expression.Value))
                     {
-                        _variables[node.Childs[0].Expression.Value] = SymmetricalTraversal(node.Childs[1]);
+                        _variables[node.Children[0].Expression.Value] = SymmetricalTraversal(node.Children[1]);
                     }
                     else
                     {
-                        _variables.Add(node.Childs[0].Expression.Value, SymmetricalTraversal(node.Childs[1]));
+                        _variables.Add(node.Children[0].Expression.Value, SymmetricalTraversal(node.Children[1]));
                     }
 
                     break;

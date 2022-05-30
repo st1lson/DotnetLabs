@@ -1,4 +1,4 @@
-﻿namespace Lab4.Tree
+﻿namespace Lab4.Trees
 {
     internal sealed class SimpleExpression : Expression
     {

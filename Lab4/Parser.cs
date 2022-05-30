@@ -1,4 +1,4 @@
-﻿using Lab4.Tree;
+﻿using Lab4.Trees;
 using System.Collections.Generic;
 
 namespace Lab4
@@ -9,7 +9,7 @@ namespace Lab4
 
         public Parser()
         {
-            _tree = new();
+            _tree = new Tree<Expression>();
         }
 
         public Tree<Expression> Parse(string expression)
@@ -21,87 +21,87 @@ namespace Lab4
                 _tree.Clear();
             }
 
-            Stack<char> operStack = new();
+            Stack<char> operatorsStack = new();
             Stack<Node<Expression>> exprStack = new();
             for (int i = 0; i < expression.Length; i++)
             {
                 if (expression[i] == ')')
                 {
-                    while (operStack.Peek() != '(')
+                    while (operatorsStack.Peek() != '(')
                     {
-                        if ("=".Contains(operStack.Peek()) && "=".Contains(exprStack.Peek().Expression.Value))
+                        if ("=".Contains(operatorsStack.Peek()) && "=".Contains(exprStack.Peek().Expression.Value))
                         {
-                            exprStack.Peek().Expression.Value += operStack.Pop();
+                            exprStack.Peek().Expression.Value += operatorsStack.Pop();
                         }
                         else
                         {
-                            char operat = operStack.Pop();
+                            char operatorChar = operatorsStack.Pop();
                             Node<Expression> rightChild = exprStack.Pop();
                             Node<Expression> leftChild = exprStack.Pop();
-                            exprStack.Push(new Node<Expression>(new ComplexExpression(operat.ToString()), leftChild, rightChild));
+                            exprStack.Push(new Node<Expression>(new ComplexExpression(operatorChar.ToString()), leftChild, rightChild));
                         }
                     }
 
-                    operStack.Pop();
+                    operatorsStack.Pop();
                 }
                 else if (char.IsLetter(expression[i]) || char.IsDigit(expression[i]) || (expression[i] == '-' && (i == 0 || expression[i - 1] == '(')))
                 {
-                    string elem = expression[i].ToString();
+                    string element = expression[i].ToString();
                     i++;
                     while (i < expression.Length && (char.IsLetter(expression[i]) || char.IsDigit(expression[i]) || expression[i] == '.'))
                     {
-                        elem += expression[i];
+                        element += expression[i];
                         i++;
                     }
 
                     i--;
-                    exprStack.Push(new Node<Expression>(new SimpleExpression(elem)));
+                    exprStack.Push(new Node<Expression>(new SimpleExpression(element)));
                 }
                 else if (expression[i] == '(')
                 {
-                    operStack.Push(expression[i]);
+                    operatorsStack.Push(expression[i]);
                 }
                 else if ("+-*/=".Contains(expression[i]))
                 {
-                    while (operStack.Count != 0 && GetPriority(operStack.Peek()) >= GetPriority(expression[i]))
+                    while (operatorsStack.Count != 0 && GetPriority(operatorsStack.Peek()) >= GetPriority(expression[i]))
                     {
-                        if (operStack.Peek() == '=' && expression[i] == '=')
+                        if (operatorsStack.Peek() == '=' && expression[i] == '=')
                         {
                             break;
                         }
 
-                        char operat = operStack.Pop();
+                        char operatorChar = operatorsStack.Pop();
                         Node<Expression> rightChild = exprStack.Pop();
                         Node<Expression> leftChild = exprStack.Pop();
-                        exprStack.Push(new Node<Expression>(new ComplexExpression(operat.ToString()), leftChild, rightChild));
+                        exprStack.Push(new Node<Expression>(new ComplexExpression(operatorChar.ToString()), leftChild, rightChild));
                     }
-                    operStack.Push(expression[i]);
+                    operatorsStack.Push(expression[i]);
                 }
             }
 
-            while (operStack.Count != 0)
+            while (operatorsStack.Count != 0)
             {
-                char operat = operStack.Pop();
+                char operatorChar = operatorsStack.Pop();
                 Node<Expression> rightChild = exprStack.Pop();
                 Node<Expression> leftChild = exprStack.Pop();
-                exprStack.Push(new Node<Expression>(new ComplexExpression(operat.ToString()), leftChild, rightChild));
+                exprStack.Push(new Node<Expression>(new ComplexExpression(operatorChar.ToString()), leftChild, rightChild));
             }
 
             _tree.Root = exprStack.Pop();
             return _tree;
         }
 
-        private static int GetPriority(char oper)
+        private static int GetPriority(char operatorChar)
         {
-            switch (oper)
+            switch (operatorChar)
             {
                 case '(':
                     return -2;
                 case ')':
                     return 1;
-                case char when "+-".Contains(oper):
+                case { } when "+-".Contains(operatorChar):
                     return 2;
-                case char when "*/".Contains(oper):
+                case { } when "*/".Contains(operatorChar):
                     return 3;
                 case '=':
                     return 0;

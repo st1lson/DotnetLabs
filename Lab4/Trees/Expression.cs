@@ -1,10 +1,10 @@
-﻿namespace Lab4.Tree
+﻿namespace Lab4.Trees
 {
     public abstract class Expression
     {
         public string Value { get; internal set; }
 
-        public Expression(string value)
+        protected Expression(string value)
         {
             Value = value;
         }
