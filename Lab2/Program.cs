@@ -6,12 +6,11 @@ using System.Xml.Linq;
 
 namespace Lab2
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             XElement data = XElement.Load("xmlFile.xml");
-            var qweq = data.Descendants("Articles");
 
             IEnumerable<XElement> authors = data.Descendants("Article").ElementAt(0).Descendants("Author").Select(a => a);
             PrintArray(authors);
@@ -20,7 +19,7 @@ namespace Lab2
             PrintArray(names);
 
             var anonymousType = data.Descendants("Article").ElementAt(1).Descendants("Author")
-                .Select(a => new { FirstName = a.Element("FirstName").Value, LastName = a.Element("LastName").Value });
+                .Select(a => new { FirstName = a.Element("FirstName")?.Value, LastName = a.Element("LastName").Value });
             PrintArray(anonymousType);
 
             IEnumerable<XElement> articles = data.Descendants("Journal").ElementAt(0).Descendants("Article").Where(a => a.Descendants("Author").Count() > 0);
@@ -30,9 +29,9 @@ namespace Lab2
             PrintArray(sortedArticles);
 
             IEnumerable<XElement> sortedAuthors = data.Descendants("Article").ElementAt(0).Descendants("Author")
-                .Where(a => a.Element("Workplace").Value != string.Empty)
-                .OrderBy(a => a.Element("LastName").Value)
-                .ThenBy(a => a.Element("FirstName").Value);
+                .Where(a => a.Element("Workplace")?.Value != string.Empty)
+                .OrderBy(a => a.Element("LastName")?.Value)
+                .ThenBy(a => a.Element("FirstName")?.Value);
             PrintArray(sortedAuthors);
 
             IEnumerable<XElement> limitedAuthors = data.Descendants("Article").ElementAt(0).Descendants("Author")
@@ -40,20 +39,20 @@ namespace Lab2
             PrintArray(limitedAuthors);
 
 
-            double averageCopies = data.Descendants("Journal").Average(j => (long)Convert.ToDouble(j.Element("Copies").Value));
+            double averageCopies = data.Descendants("Journal").Average(j => (long)Convert.ToDouble(j.Element("Copies")?.Value));
             Console.WriteLine($"Average copies: {averageCopies}\n");
 
             IEnumerable<XElement> limitedArticles = data.Descendants("Journal").ElementAt(0).Descendants("Article")
-                .SkipWhile(a => Convert.ToDateTime(a.Element("ReleaseDate").Value) < DateTime.Now - TimeSpan.FromDays(30) || Convert.ToDateTime(a.Element("ReleaseDate").Value) > DateTime.Now);
+                .SkipWhile(a => Convert.ToDateTime(a.Element("ReleaseDate")?.Value) < DateTime.Now - TimeSpan.FromDays(30) || Convert.ToDateTime(a.Element("ReleaseDate").Value) > DateTime.Now);
             PrintArray(limitedArticles);
 
             IEnumerable<XElement> specificAuthors = data.Descendants("Author")
-                .Where(a => Regex.IsMatch(a.Element("FirstName").Value, @"[Jj]ohn"));
+                .Where(a => Regex.IsMatch(a.Element("FirstName")?.Value!, @"[Jj]ohn"));
             PrintArray(specificAuthors);
 
             var groupedAuthors =
                 from a in data.Descendants("Article").ElementAt(0).Descendants("Author")
-                group a by a.Element("Workplace").Value into g
+                group a by a.Element("Workplace")?.Value into g
                 select new { Name = g.Key, Count = g.Count() };
             if (groupedAuthors is null)
             {
@@ -72,11 +71,8 @@ namespace Lab2
             }
             PrintArray(unitedArticle);
 
-            string author = data.Descendants("Article").FirstOrDefault(a => Regex.IsMatch(a.Element("Name").Value, @"[Ss]econd")).Value;
-            if (author is not null)
-            {
-                Console.WriteLine(author);
-            }
+            string author = data.Descendants("Article").FirstOrDefault(a => Regex.IsMatch(a.Element("Name")?.Value!, @"[Ss]econd"))?.Value;
+            Console.WriteLine(author);
         }
 
         private static void PrintArray<T>(IEnumerable<T> array)
