@@ -5,14 +5,18 @@ namespace Lab5
 {
     internal sealed class Context
     {
-        private readonly ISorter _sorter;
-        private readonly ISearcher _searcher;
+        private ISorter _sorter;
+        private ISearcher _searcher;
 
         public Context(ISorter sorter, ISearcher searcher)
         {
             _sorter = sorter;
             _searcher = searcher;
         }
+
+        public void ChangeSorter(ISorter sorter) => _sorter = sorter;
+
+        public void ChangeSearcher(ISearcher searcher) => _searcher = searcher;
 
         public void Sort(int[] array) => _sorter.Sort(array);
 
