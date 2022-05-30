@@ -1,8 +1,8 @@
 ﻿namespace Lab3
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             Game game = new(Manager.GetInstance("Oliver"));
         }

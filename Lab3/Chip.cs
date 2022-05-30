@@ -1,6 +1,6 @@
 ﻿namespace Lab3
 {
-    class Chip
+    internal class Chip
     {
     }
 }

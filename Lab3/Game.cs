@@ -6,12 +6,15 @@ namespace Lab3
     {
         private readonly Manager _manager;
 
+        private readonly GameSpace _gameSpace;
+
         private List<Chip> _chips;
 
         public Game(Manager manager)
         {
             _manager = manager;
-            _chips = new();
+            _gameSpace = new GameSpace();
+            _chips = new List<Chip>();
         }
     }
 }
