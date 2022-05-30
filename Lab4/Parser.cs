@@ -22,23 +22,23 @@ namespace Lab4
             }
 
             Stack<char> operatorsStack = new();
-            Stack<Node<Expression>> exprStack = new();
+            Stack<Expression> exprStack = new();
             for (int i = 0; i < expression.Length; i++)
             {
                 if (expression[i] == ')')
                 {
                     while (operatorsStack.Peek() != '(')
                     {
-                        if ("=".Contains(operatorsStack.Peek()) && "=".Contains(exprStack.Peek().Expression.Value))
+                        if ("=".Contains(operatorsStack.Peek()) && "=".Contains(exprStack.Peek().Value))
                         {
-                            exprStack.Peek().Expression.Value += operatorsStack.Pop();
+                            exprStack.Peek().Value += operatorsStack.Pop();
                         }
                         else
                         {
                             char operatorChar = operatorsStack.Pop();
-                            Node<Expression> rightChild = exprStack.Pop();
-                            Node<Expression> leftChild = exprStack.Pop();
-                            exprStack.Push(new Node<Expression>(new ComplexExpression(operatorChar.ToString()), leftChild, rightChild));
+                            Expression rightChild = exprStack.Pop();
+                            Expression leftChild = exprStack.Pop();
+                            exprStack.Push(new ComplexExpression(operatorChar.ToString(), leftChild, rightChild));
                         }
                     }
 
@@ -55,7 +55,7 @@ namespace Lab4
                     }
 
                     i--;
-                    exprStack.Push(new Node<Expression>(new SimpleExpression(element)));
+                    exprStack.Push(new SimpleExpression(element));
                 }
                 else if (expression[i] == '(')
                 {
@@ -71,9 +71,9 @@ namespace Lab4
                         }
 
                         char operatorChar = operatorsStack.Pop();
-                        Node<Expression> rightChild = exprStack.Pop();
-                        Node<Expression> leftChild = exprStack.Pop();
-                        exprStack.Push(new Node<Expression>(new ComplexExpression(operatorChar.ToString()), leftChild, rightChild));
+                        Expression rightChild = exprStack.Pop();
+                        Expression leftChild = exprStack.Pop();
+                        exprStack.Push(new ComplexExpression(operatorChar.ToString(), leftChild, rightChild));
                     }
                     operatorsStack.Push(expression[i]);
                 }
@@ -82,9 +82,9 @@ namespace Lab4
             while (operatorsStack.Count != 0)
             {
                 char operatorChar = operatorsStack.Pop();
-                Node<Expression> rightChild = exprStack.Pop();
-                Node<Expression> leftChild = exprStack.Pop();
-                exprStack.Push(new Node<Expression>(new ComplexExpression(operatorChar.ToString()), leftChild, rightChild));
+                Expression rightChild = exprStack.Pop();
+                Expression leftChild = exprStack.Pop();
+                exprStack.Push(new ComplexExpression(operatorChar.ToString(), leftChild, rightChild));
             }
 
             _tree.Root = exprStack.Pop();
