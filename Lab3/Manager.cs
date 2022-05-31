@@ -13,12 +13,7 @@
 
         public static Manager GetInstance(string name)
         {
-            if (_instance == null)
-            {
-                _instance = new Manager(name);
-            }
-
-            return _instance;
+            return _instance ??= new Manager(name);
         }
     }
 }

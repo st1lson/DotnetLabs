@@ -1,6 +1,6 @@
 ﻿namespace Lab3
 {
-    class GameSpace
+    internal class GameSpace
     {
     }
 }
