@@ -1,10 +1,10 @@
-﻿using Lab4.Tree;
+﻿using Lab4.Trees;
 
 namespace Lab4
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             Parser parser = new();
             Tree<Expression> tree = parser.Parse("a = 4 + 123 * 6");
