@@ -10,7 +10,7 @@ namespace Lab2
     {
         private static void Main()
         {
-            XElement data = XElement.Load("xmlFile1.xml");
+            XElement data = XElement.Load("xmlFile.xml");
 
             IEnumerable<XElement> authors = data.Descendants("Article").ElementAt(0).Descendants("Author").Select(a => a);
             PrintArray(authors);
