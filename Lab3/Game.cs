@@ -1,20 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Lab3
 {
     internal class Game
     {
-        private readonly Manager _manager;
+        private Manager _manager;
 
-        private readonly GameSpace _gameSpace;
+        private readonly List<Player> _players;
 
-        private List<Chip> _chips;
-
-        public Game(Manager manager)
+        public Game(Manager manager, List<Player> players)
         {
             _manager = manager;
-            _gameSpace = new GameSpace();
-            _chips = new List<Chip>();
+            _players = players;
+        }
+
+        public void Play()
+        {
+            while (true)
+            {
+                Console.WriteLine($"Game manager: {_manager.Name}");
+                foreach (Player player in _players)
+                {
+                    GameSpace.Turn(player);
+                }
+
+                _manager = Manager.GetInstance(Guid.NewGuid().ToString());
+            }
         }
     }
 }

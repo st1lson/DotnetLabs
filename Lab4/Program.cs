@@ -7,7 +7,7 @@ namespace Lab4
         private static void Main()
         {
             Parser parser = new();
-            Tree<Expression> tree = parser.Parse("a = 4 + 123 * 6");
+            Tree<Expression> tree = parser.Parse("a = 3213 + 123 / 2 * 3");
             tree.Solve(out var _);
             tree.PrintVariables();
         }
