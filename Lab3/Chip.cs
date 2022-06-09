@@ -1,6 +1,9 @@
 ﻿namespace Lab3
 {
-    internal class Chip
+    internal enum Chip
     {
+        Black,
+        Red,
+        White
     }
 }
