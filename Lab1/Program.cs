@@ -144,7 +144,7 @@ namespace Lab1
             PrintArray(detailedArticles);
 
             IEnumerable<Author> unitedArticle = default;
-            for(int i = 0; i < articlesCollection.Count - 1; i++)
+            for (int i = 0; i < articlesCollection.Count - 1; i++)
             {
                 unitedArticle = articlesCollection[i].Authors.Union(articlesCollection[i + 1].Authors);
             }
